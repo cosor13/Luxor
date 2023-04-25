@@ -1,39 +1,7 @@
-Setup Project in GCP account/create bucket
-main.tf
+1. Create Cluster GKE using Terraform Module
+cluster.tf
 
-```module"account_setup"{
-  source ="./module"
-  account_setup ={
-    billing_account_name ="My Billing Account"
-    project_name         ="luxor"
-    bucket_name          ="luxor"
-  }
-}
-backend.tf
-
-terraform {
-  backend "gcs" {
-    bucket = "luxor"
-    prefix = "1.project_setup"
-  }
-}
-output.tf
-
-output"project_id"{
-  value =google_project.luxor.id
-}
-output"project_name"{
-  value =google_project.luxor.name
-}
-output"bucketname"{
-  value =nonsensitive(google_storage_bucket.backend-luxor.name)
-}
-
-2. Create Cluster GKE
-
-```cluster.tf
-
-provider "google" {
+```provider "google" {
   region = var.gke_config["region"]
   zone   = var.gke_config["zone"]
 }
@@ -98,18 +66,4 @@ resource "null_resource" "set-kubeconfig" {
   }
 }
 
-main.tf
-
-module "gke" {
-  source = "./module/"
-gke_config = {
-    region         = "us-central1"
-    zone           = "us-central1-c"
-    cluster_name   = "project-cluster"
-    machine_type   = "e2-medium"
-    node_count     = 1
-    node_pool_name = "my-node-pool"
-    preemptible    = true
-    node_version   = "1.23.5-gke.1500" # finds build version automatically based on region. We can change it to 1.21   . In this case it will automatically find minor version
-  }
-}
+2. Main.tf
