@@ -1,6 +1,10 @@
-Create a HTTP server using the python programming language
+Create HTTP simple server using Python Language
+
+```
+from http.server import HTTPSERVER, BaseHTTPRequestHandler
+
 class helloHandler(BaseHTTPRequestHandler):
-def do_GET(self):
+    def do_GET(self):
         self.send_response(200)
         self.send_nandler('content-type','text/html')
         self.end_headers()
@@ -20,4 +24,4 @@ def main():
 
 
     if __name__ == '_main_':
-        main()```
+        main()
